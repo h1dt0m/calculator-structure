@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Va and Vb Calculator</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <!--jQueryを読み込む-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>Va and Vb Calculator</h1>
+    <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
+
+    <label for="f">F（おもりが加える力の大きさを入力）:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="f"
+      placeholder="単位 : N"
+    /><br /><br />
+
+    <label for="l">L（橋の長さを入力）:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="l"
+      placeholder="単位 : m"
+    /><br /><br />
+
+    <label for="s">S（トラスの一辺の長さを入力） : </label>
+    <input
+      type="number"
+      step="0.01"
+      id="s"
+      placeholder="単位 : m"
+    /><br /><br />
+
+    <button id="calculate">計算</button><br /><br />
+
+    <p>
+      <strong
+        >計算結果は概算値です。正確な値ではあありませんのでご注意ください。</strong
+      >
+    </p>
+    <br />
+
+    <label for="Nab">Nab:</label>
+    <input type="number" step="0.01" id="Nab" disabled /><br /><br />
+
+    <label for="Nad">Nad:</label>
+    <input type="number" step="0.01" id="Nad" disabled /><br /><br />
+
+    <label for="Ncd">Ncd:</label>
+    <input type="number" step="0.01" id="Ncd" disabled /><br /><br />
+
+    <script>
+      $(document).ready(function () {
+        $("#calculate").click(function () {
+          const f = $("#f").val();
+          const l = $("#l").val();
+          const s = $("#s").val();
+
+          // 将来追加する機能に使う予定なので、あまり気にしないでください。
+          const sin = Math.sqrt(2);
+          const cos = Math.sqrt(2);
+
+          // Nab、Nad、Ncdの値を計算する
+          const Nad = sin * (f / 2 - f);
+          const Ncd = ((f / 2) * l) / 2 / s;
+          const Nab = (-1 * Nad) / cos - Ncd;
+
+          $("#Nab").val(Nab.toFixed(2));
+          $("#Nad").val(Nad.toFixed(2));
+          $("#Ncd").val(Ncd.toFixed(2));
+        });
+      });
+    </script>
+  </body>
+</html>
