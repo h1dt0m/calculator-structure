@@ -3,9 +3,47 @@ body {
   padding: 20px;
 }
 
-h1 {
+/* h1要素のスタイル */
+
+h1.page {
   font-size: 28px;
   margin-bottom: 20px;
+}
+
+h1.index {
+  font-size: 3rem;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+}
+
+/* h2要素のスタイル */
+h2 {
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* a要素のスタイル */
+a {
+  display: block;
+  font-size: 1.5rem;
+  margin: 0 auto;
+  width: 20rem;
+  text-align: center;
+  padding: 1rem;
+  border: 2px solid black;
+  border-radius: 1rem;
+  text-decoration: none;
+  color: black;
+}
+
+/* a要素のhover時のスタイル */
+a:hover {
+  background-color: black;
+  color: white;
 }
 
 label {
