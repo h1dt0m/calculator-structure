@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Va and Vb Calculator</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <!--Font Awesomeのアイコンフォントを読み込む-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!--jQueryを読み込む-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--autowidthを読み込む-->
+    <script src="https://unpkg.com/autowidth/autowidth.min.js"></script>
+  </head>
+  <body>
+    <!--戻るボタン-->
+    <div id="back-to-top-button">
+      <a href="../index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
+    </div>
+
+    <h1 class="page">Va and Vb Calculator</h1>
+    <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
+
+    <label for="force">F（おもりが加える力の大きさを入力）:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="force"
+      class="autowidth"
+      placeholder="単位 : N"
+    /><br /><br />
+
+    <label for="length">L（橋の長さを入力）:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="l"
+      class="autowidth"
+      placeholder="単位 : m"
+    /><br /><br />
+
+    <label for="truss-length">S（トラスの一辺の長さを入力） : </label>
+    <input
+      type="number"
+      step="0.01"
+      id="truss-length"
+      class="autowidth"
+      placeholder="単位 : m"
+    /><br /><br />
+
+    <button id="calculate">計算</button><br /><br />
+
+    <p>
+      <strong
+        >計算結果は概算値です。正確な値ではあありませんのでご注意ください。</strong
+      >
+    </p>
+    <br />
+
+    <label for="Nab">Nab:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="Nab"
+      class="autowidth"
+      disabled
+    /><br /><br />
+
+    <label for="Ncd">Ncd:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="Ncd"
+      class="autowidth"
+      disabled
+    /><br /><br />
+
+    <div class="space"></div>
+
+    <script>
+      $(document).ready(function () {
+        $("#calculate").click(function () {
+          const f = $("#force").val();
+          const l = $("#length").val();
+          const s = $("#truss-length").val();
+
+          // Nab、Nad、Ncdの値を計算する
+          const Ncd = ((f / 2) * l) / 2 / s;
+          const Nab = -Ncd;
+
+          $("#Nab").val(Nab.toFixed(2));
+          $("#Ncd").val(Ncd.toFixed(2));
+        });
+      });
+    </script>
+  </body>
+</html>
