@@ -17,6 +17,7 @@ h1.index {
 
 li {
   list-style-type: none;
+  padding: 5px;
 }
 
 /* h2要素のスタイル */
