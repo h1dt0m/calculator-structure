@@ -51,7 +51,7 @@ a:hover {
 }
 
 /* 戻るボタンのスタイル */
-#back-to-top-button {
+/* #back-to-top-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -72,7 +72,7 @@ a:hover {
 
 #back-to-top-button a:hover {
   background-color: #666;
-}
+} */
 
 label {
   display: block;
