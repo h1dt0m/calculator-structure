@@ -1,0 +1,10 @@
+{
+  "javascript": {
+    "jQuery": "https://code.jquery.com/jquery-3.6.0.min.js",
+    "autowidth": "https://unpkg.com/autowidth/autowidth.min.js",
+    "iTyped": "comming soon"
+  },
+  "css": {
+    "FontAwesome": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  }
+}
