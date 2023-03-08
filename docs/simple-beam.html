@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Va and Vb Calculator</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style.css" />
+    <title>単純梁の計算</title>
+    <link rel="stylesheet" href="/style.css" />
     <!--Font Awesomeのアイコンフォントを読み込む-->
     <link
       rel="stylesheet"
@@ -21,7 +19,7 @@
       <a href="../index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
     </div>
 
-    <h1 class="page">Va and Vb Calculator</h1>
+    <h1 class="page">単純梁の計算</h1>
     <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
 
     <label for="force">F（おもりが加える力の大きさを入力）:</label>
@@ -33,66 +31,79 @@
       placeholder="単位 : N"
     /><br /><br />
 
+    <label for="da">Da（おもりの左端からの距離を入力）:</label>
+    <input
+      type="number"
+      step="0.01"
+      id="da"
+      class="autowidth"
+      placeholder="単位 : m"
+    /><br /><br />
+
     <label for="length">L（橋の長さを入力）:</label>
     <input
       type="number"
       step="0.01"
-      id="l"
+      id="length"
       class="autowidth"
       placeholder="単位 : m"
     /><br /><br />
 
-    <label for="truss-length">S（トラスの一辺の長さを入力） : </label>
+    <label for="db">Db（おもりの右端からの距離）:</label>
     <input
       type="number"
       step="0.01"
-      id="truss-length"
+      id="db"
       class="autowidth"
-      placeholder="単位 : m"
+      placeholder="自動的に計算されます"
+      disabled
     /><br /><br />
 
     <button id="calculate">計算</button><br /><br />
 
-    <p>
-      <strong
-        >計算結果は概算値です。正確な値ではあありませんのでご注意ください。</strong
-      >
-    </p>
-    <br />
-
-    <label for="Nab">Nab:</label>
+    <label for="va">Va:</label>
     <input
       type="number"
       step="0.01"
-      id="Nab"
+      id="va"
       class="autowidth"
       disabled
     /><br /><br />
 
-    <label for="Ncd">Ncd:</label>
+    <label for="vb">Vb:</label>
     <input
       type="number"
       step="0.01"
-      id="Ncd"
+      id="vb"
       class="autowidth"
       disabled
     /><br /><br />
 
-    <div class="space"></div>
+    <!--autowidth-->
+    <script>
+      autowidth(document.getElementById("force"));
+      autowidth(document.getElementById("da"));
+      autowidth(document.getElementById("length"));
+      autowidth(document.getElementById("db"));
+      autowidth(document.getElementById("va"));
+      autowidth(document.getElementById("vb"));
+    </script>
 
     <script>
       $(document).ready(function () {
         $("#calculate").click(function () {
           const f = $("#force").val();
+          const da = $("#da").val();
           const l = $("#length").val();
-          const s = $("#truss-length").val();
+          const db = l - da;
 
-          // Nab、Nad、Ncdの値を計算する
-          const Ncd = ((f / 2) * l) / 2 / s;
-          const Nab = -Ncd;
+          $("#db").val(db);
 
-          $("#Nab").val(Nab.toFixed(2));
-          $("#Ncd").val(Ncd.toFixed(2));
+          const vb = (f * da) / l;
+          const va = (f * db) / l;
+
+          $("#va").val(va);
+          $("#vb").val(vb);
         });
       });
     </script>

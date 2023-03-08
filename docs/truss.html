@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Va and Vb Calculator</title>
-    <link rel="stylesheet" href="../css/style.css" />
+    <title>トラス橋の計算</title>
+    <link rel="stylesheet" href="style.css" />
     <!--Font Awesomeのアイコンフォントを読み込む-->
     <link
       rel="stylesheet"
@@ -10,39 +10,42 @@
     />
     <!--jQueryを読み込む-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--autowidthを読み込む-->
+    <script src="https://unpkg.com/autowidth/autowidth.min.js"></script>
   </head>
   <body>
     <!--戻るボタン-->
     <div id="back-to-top-button">
-      <a href="../index.html">
-        <i class="fa fa-arrow-left"></i> 戻る
-      </a>
+      <a href="../index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
     </div>
-    
+
     <h1 class="page">Va and Vb Calculator</h1>
     <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
 
-    <label for="f">F（おもりが加える力の大きさを入力）:</label>
+    <label for="force">F（おもりが加える力の大きさを入力）:</label>
     <input
       type="number"
       step="0.01"
-      id="f"
+      id="force"
+      class="autowidth"
       placeholder="単位 : N"
     /><br /><br />
 
-    <label for="l">L（橋の長さを入力）:</label>
+    <label for="length">L（橋の長さを入力）:</label>
     <input
       type="number"
       step="0.01"
-      id="l"
+      id="length"
+      class="autowidth"
       placeholder="単位 : m"
     /><br /><br />
 
-    <label for="s">S（トラスの一辺の長さを入力） : </label>
+    <label for="truss-length">S（トラスの一辺の長さを入力） : </label>
     <input
       type="number"
       step="0.01"
-      id="s"
+      id="truss-length"
+      class="autowidth"
       placeholder="単位 : m"
     /><br /><br />
 
@@ -56,20 +59,48 @@
     <br />
 
     <label for="Nab">Nab:</label>
-    <input type="number" step="0.01" id="Nab" disabled /><br /><br />
+    <input
+      type="number"
+      step="0.01"
+      id="Nab"
+      class="autowidth"
+      disabled
+    /><br /><br />
 
     <label for="Nad">Nad:</label>
-    <input type="number" step="0.01" id="Nad" disabled /><br /><br />
+    <input
+      type="number"
+      step="0.01"
+      id="Nad"
+      class="autowidth"
+      disabled
+    /><br /><br />
 
     <label for="Ncd">Ncd:</label>
-    <input type="number" step="0.01" id="Ncd" disabled /><br /><br />
+    <input
+      type="number"
+      step="0.01"
+      id="Ncd"
+      class="autowidth"
+      disabled
+    /><br /><br />
+
+    <!--autowidthを設定-->
+    <script>
+      autowidth(document.getElementById("force"));
+      autowidth(document.getElementById("length"));
+      autowidth(document.getElementById("truss-length"));
+      autowidth(document.getElementById("Nab"));
+      autowidth(document.getElementById("Nad"));
+      autowidth(document.getElementById("Ncd"));
+    </script>
 
     <script>
       $(document).ready(function () {
         $("#calculate").click(function () {
-          const f = $("#f").val();
-          const l = $("#l").val();
-          const s = $("#s").val();
+          const f = $("#force").val();
+          const l = $("#length").val();
+          const t = $("#truss-length").val();
 
           // 将来追加する機能に使う予定なので、あまり気にしないでください。
           const sin = Math.sqrt(2);
@@ -77,7 +108,7 @@
 
           // Nab、Nad、Ncdの値を計算する
           const Nad = sin * (f / 2 - f);
-          const Ncd = ((f / 2) * l) / 2 / s;
+          const Ncd = ((f / 2) * l) / 2 / t;
           const Nab = (-1 * Nad) / cos - Ncd;
 
           $("#Nab").val(Nab.toFixed(2));
