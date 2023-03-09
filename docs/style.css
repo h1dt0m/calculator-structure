@@ -15,9 +15,15 @@ h1.index {
   text-align: center;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 li {
   list-style-type: none;
   padding: 5px;
+  margin-bottom: 10px;
 }
 
 /* h2要素のスタイル */
@@ -28,7 +34,7 @@ h2 {
 }
 
 /* a要素のスタイル */
-a {
+li a {
   display: block;
   font-size: 1.5rem;
   margin: 0 auto;
@@ -42,7 +48,7 @@ a {
 }
 
 /* a要素のhover時のスタイル */
-a:hover {
+li a:hover {
   background-color: black;
   color: white;
 }
@@ -84,4 +90,24 @@ button {
 
 button:hover {
   background-color: #3e8e41;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  margin-top: 4rem;
+  font-size: 14px;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid #fff;
+}
+
+footer a:hover {
+  border-bottom: none;
 }
