@@ -14,14 +14,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--autowidthを読み込む-->
     <script src="https://unpkg.com/autowidth/autowidth.min.js"></script>
+    <!--SweetAlertを読み込む-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <!--戻るボタン-->
     <div id="back-to-top-button">
-      <a href="../index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
+      <a href="index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
     </div>
 
-    <h1 class="page">Va and Vb Calculator</h1>
+    <h1 class="page">ラーメン橋の計算</h1>
     <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
 
     <label for="force">F（おもりが加える力の大きさを入力）:</label>
@@ -51,60 +53,77 @@
       placeholder="単位 : m"
     /><br /><br />
 
-    <button id="calculate">計算</button><br /><br />
+    <button id="calculate" onclick="validateInputs()">計算</button><br /><br />
 
-    <p>
-      <strong
-        >計算結果は概算値です。正確な値ではあありませんのでご注意ください。</strong
-      >
-    </p>
-    <br />
-
-    <label for="Nab">Nab:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="Nab"
-      class="autowidth"
-      disabled
-    /><br /><br />
-
-    <label for="Ncd">Ncd:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="Ncd"
-      class="autowidth"
-      disabled
-    /><br /><br />
-
-    <div class="space"></div>
+    <div id="result">
+      <div id="Nab"></div>
+      <div id="Ncd"></div>
+    </div>
 
     <!--autowidthをセットアップ-->
     <script>
-      autowidth(document.getElementById('force'));
-      autowidth(document.getElementById('length'));
-      autowidth(document.getElementById('truss-length'));
-      autowidth(document.getElementById('Nab'));
-      autowidth(document.getElementById('Ncd'));
+      autowidth(document.getElementById("force"));
+      autowidth(document.getElementById("length"));
+      autowidth(document.getElementById("truss-length"));
     </script>
 
     <!--計算-->
     <script>
-      $(document).ready(function () {
-        $("#calculate").click(function () {
-          const f = $("#force").val();
-          const l = $("#length").val();
-          const t = $("#truss-length").val();
+      function validateInputs() {
+        const f = parseFloat($("#force").val());
+        const l = parseFloat($("#length").val());
+        const t = parseFloat($("#truss-length").val());
 
-          // Nab、Nad、Ncdの値を計算する
-          const Ncd = ((f / 2) * l) / 2 / t;
-          const Nab = -Ncd;
+        const regex = /^\d+(\.\d+)?$/;
+        if (
+          !isNaN(f) &&
+          !isNaN(l) &&
+          !isNaN(t) &&
+          regex.test($("#force").val()) &&
+          regex.test($("#length").val()) &&
+          regex.test($("#truss-length").val())
+        ) {
+          $("#force").css("background-color", "white");
+          if (t <= l) {
+            $("#length").css("background-color", "white");
+            $("#truss-length").css("background-color", "white");
+            calculate(f, l, t);
+          } else {
+            $("#length").css("background-color", "orange");
+            $("#truss-length").css("background-color", "orange");
+            Swal.fire({
+              title: "エラー",
+              text: "正しい値を入力してください。トラスの一辺の長さが橋の長さより長くなっています。",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        } else {
+          $("#force").css("background-color", isNaN(f) ? "orange" : "white");
+          $("#length").css("background-color", isNaN(l) ? "orange" : "white");
+          $("#truss-length").css(
+            "background-color",
+            isNaN(t) ? "orange" : "white"
+          );
+          Swal.fire({
+            title: "エラー",
+            text: "正しい値を入力してください。オレンジ色になっている部分が間違っています。",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
 
-          $("#Nab").val(Nab.toFixed(2));
-          $("#Ncd").val(Ncd.toFixed(2));
-        });
-      });
+      function calculate(f, l, t) {
+        // Nab、Nad、Ncdの値を計算する
+        const Ncd = ((f / 2) * l) / 2 / t;
+        const NcdText = "Ncd: " + Math.round(Ncd * 100) / 100 + " N";
+        const Nab = -Ncd;
+        const NabText = "Nab: " + Math.round(Nab * 100) / 100 + " N";
+  
+        $("#Nab").html(NabText);
+        $("#Ncd").html(NcdText);
+      }
     </script>
   </body>
 </html>

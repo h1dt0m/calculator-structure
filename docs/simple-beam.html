@@ -10,13 +10,18 @@
     />
     <!--jQueryを読み込む-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!--autowidthを読み込む-->
+    <!--autowidthjsを読み込む-->
     <script src="https://unpkg.com/autowidth/autowidth.min.js"></script>
+    <!--SweetAlertを読み込む-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
+    <noscript
+      >JavaScriptが無効です。正常に動作しない可能性が高いです。</noscript
+    >
     <!--戻るボタン-->
     <div id="back-to-top-button">
-      <a href="../index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
+      <a href="index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
     </div>
 
     <h1 class="page">単純梁の計算</h1>
@@ -55,29 +60,17 @@
       step="0.01"
       id="db"
       class="autowidth"
-      placeholder="自動的に計算されます"
+      placeholder=""
       disabled
     /><br /><br />
 
-    <button id="calculate">計算</button><br /><br />
+    <button id="calculate" onclick="validateInputs()">計算</button><br /><br />
 
-    <label for="va">Va:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="va"
-      class="autowidth"
-      disabled
-    /><br /><br />
-
-    <label for="vb">Vb:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="vb"
-      class="autowidth"
-      disabled
-    /><br /><br />
+    <p>結果</p>
+    <div>
+      <p id="va" class="result"></p>
+      <p id="vb" class="result"></p>
+    </div>
 
     <!--autowidth-->
     <script>
@@ -85,27 +78,54 @@
       autowidth(document.getElementById("da"));
       autowidth(document.getElementById("length"));
       autowidth(document.getElementById("db"));
-      autowidth(document.getElementById("va"));
-      autowidth(document.getElementById("vb"));
     </script>
 
     <script>
-      $(document).ready(function () {
-        $("#calculate").click(function () {
-          const f = $("#force").val();
-          const da = $("#da").val();
-          const l = $("#length").val();
-          const db = l - da;
+      function validateInputs() {
+        const f = parseFloat($("#force").val());
+        const da = parseFloat($("#da").val());
+        const l = parseFloat($("#length").val());
 
-          $("#db").val(db);
+        const regex = /^\d+(\.\d+)?$/;
+        if (
+          !isNaN(f) &&
+          !isNaN(da) &&
+          !isNaN(l) &&
+          regex.test($("#force").val()) &&
+          regex.test($("#da").val()) &&
+          regex.test($("#length").val())
+        ) {
+          $("#force").css("background-color", "white");
+          $("#da").css("background-color", "white");
+          $("#length").css("background-color", "white");
+          calculate(f, da, l);
+        } else {
+          $("#force").css("background-color", isNaN(f) ? "orange" : "white");
+          $("#da").css("background-color", isNaN(da) ? "orange" : "white");
+          $("#length").css("background-color", isNaN(l) ? "orange" : "white");
+          Swal.fire({
+            title: "エラー",
+            text: "正しい値を入力してください。オレンジ色になっている部分が間違っています。",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
 
-          const vb = (f * da) / l;
-          const va = (f * db) / l;
+      function calculate(f, da, l) {
+        const db = l - da;
 
-          $("#va").val(va);
-          $("#vb").val(vb);
-        });
-      });
+        $("#db").val(db);
+
+        const vb = (f * da) / l;
+        const vbText = "Vb: " + Math.round(vb * 100) / 100 + "N";
+
+        const va = (f * db) / l;
+        const vaText = "Va: " + Math.round(va * 100) / 100 + "N";
+
+        $("#va").html(vaText);
+        $("#vb").html(vbText);
+      }
     </script>
   </body>
 </html>

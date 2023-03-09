@@ -12,14 +12,19 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!--autowidthを読み込む-->
     <script src="https://unpkg.com/autowidth/autowidth.min.js"></script>
+    <!--SweetAlertを読み込む-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <!--戻るボタン-->
     <div id="back-to-top-button">
-      <a href="../index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
+      <a href="index.html"> <i class="fa fa-arrow-left"></i> 戻る </a>
     </div>
 
-    <h1 class="page">Va and Vb Calculator</h1>
+    <noscript
+      >JavaScriptが無効です。正常に動作しない可能性が高いです。</noscript
+    >
+    <h1 class="page">トラス橋の計算</h1>
     <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
 
     <label for="force">F（おもりが加える力の大きさを入力）:</label>
@@ -49,73 +54,88 @@
       placeholder="単位 : m"
     /><br /><br />
 
-    <button id="calculate">計算</button><br /><br />
+    <button id="calculate" onclick="validateInputs()">計算</button>
+    <br /><br />
 
-    <p>
-      <strong
-        >計算結果は概算値です。正確な値ではあありませんのでご注意ください。</strong
-      >
-    </p>
-    <br />
-
-    <label for="Nab">Nab:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="Nab"
-      class="autowidth"
-      disabled
-    /><br /><br />
-
-    <label for="Nad">Nad:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="Nad"
-      class="autowidth"
-      disabled
-    /><br /><br />
-
-    <label for="Ncd">Ncd:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="Ncd"
-      class="autowidth"
-      disabled
-    /><br /><br />
+    <p>結果</p>
+    <div>
+      <p id="Nab" class="result"></p>
+      <p id="Nad" class="result"></p>
+      <p id="Ncd" class="result"></p>
+    </div>
 
     <!--autowidthを設定-->
     <script>
       autowidth(document.getElementById("force"));
       autowidth(document.getElementById("length"));
       autowidth(document.getElementById("truss-length"));
-      autowidth(document.getElementById("Nab"));
-      autowidth(document.getElementById("Nad"));
-      autowidth(document.getElementById("Ncd"));
     </script>
 
+    <!--正しい入力かを監視-->
     <script>
-      $(document).ready(function () {
-        $("#calculate").click(function () {
-          const f = $("#force").val();
-          const l = $("#length").val();
-          const t = $("#truss-length").val();
+      function validateInputs() {
+        const f = parseFloat($("#force").val());
+        const l = parseFloat($("#length").val());
+        const t = parseFloat($("#truss-length").val());
 
-          // 将来追加する機能に使う予定なので、あまり気にしないでください。
-          const sin = Math.sqrt(2);
-          const cos = Math.sqrt(2);
+        const regex = /^\d+(\.\d+)?$/;
+        if (
+          !isNaN(f) &&
+          !isNaN(l) &&
+          !isNaN(t) &&
+          regex.test($("#force").val()) &&
+          regex.test($("#length").val()) &&
+          regex.test($("#truss-length").val())
+        ) {
+          $("#force").css("background-color", "white");
+          if (t <= l) {
+            $("#length").css("background-color", "white");
+            $("#truss-length").css("background-color", "white");
+            calculate(f, l, t);
+          } else {
+            $("#length").css("background-color", "orange");
+            $("#truss-length").css("background-color", "orange");
+            Swal.fire({
+              title: "エラー",
+              text: "正しい値を入力してください。トラスの一辺の長さが橋の長さより長くなっています。",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        } else {
+          $("#force").css("background-color", isNaN(f) ? "orange" : "white");
+          $("#length").css("background-color", isNaN(l) ? "orange" : "white");
+          $("#truss-length").css(
+            "background-color",
+            isNaN(t) ? "orange" : "white"
+          );
+          Swal.fire({
+            title: "エラー",
+            text: "正しい値を入力してください。オレンジ色になっている部分が間違っています。",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
 
-          // Nab、Nad、Ncdの値を計算する
-          const Nad = sin * (f / 2 - f);
-          const Ncd = ((f / 2) * l) / 2 / t;
-          const Nab = (-1 * Nad) / cos - Ncd;
+      function calculate(f, l, t) {
+        $("div").remove("#result");
+        const sin = Math.sqrt(2);
+        const cos = Math.sqrt(2);
 
-          $("#Nab").val(Nab.toFixed(2));
-          $("#Nad").val(Nad.toFixed(2));
-          $("#Ncd").val(Ncd.toFixed(2));
-        });
-      });
+        const Nad = sin * (f / 2 - f);
+        const NadText = "Nad: " + Math.round(Nad * 100) / 100 + " N";
+
+        const Ncd = ((f / 2) * l) / 2 / t;
+        const NcdText = "Ncd: " + Math.round(Ncd * 100) / 100 + " N";
+
+        const Nab = (-1 * Nad) / cos - Ncd;
+        const NabText = "Nab: " + Math.round(Nab * 100) / 100 + " N";
+
+        $("#Nab").html(NabText);
+        $("#Nad").html(NadText);
+        $("#Ncd").html(NcdText);
+      }
     </script>
   </body>
 </html>
