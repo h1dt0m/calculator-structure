@@ -92,6 +92,21 @@ button:hover {
   background-color: #3e8e41;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.input {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.img {
+  flex: 1;
+}
+
 footer {
   background-color: #333;
   color: #fff;

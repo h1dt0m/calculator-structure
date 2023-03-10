@@ -24,40 +24,47 @@
     <h1 class="page">ラーメン橋の計算</h1>
     <p>数値の入力は現在整数と小数（最低0.01）のみ対応しています</p>
 
-    <label for="force">F（おもりが加える力の大きさを入力）:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="force"
-      class="autowidth"
-      placeholder="単位 : N"
-    /><br /><br />
+    <div class="container">
+      <div class="input">
+        <label for="force">F（おもりが加える力の大きさを入力）:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="force"
+          class="autowidth"
+          placeholder="単位 : N"
+        /><br /><br />
 
-    <label for="length">L（橋の長さを入力）:</label>
-    <input
-      type="number"
-      step="0.01"
-      id="length"
-      class="autowidth"
-      placeholder="単位 : m"
-    /><br /><br />
+        <label for="length">L（橋の長さを入力）:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="length"
+          class="autowidth"
+          placeholder="単位 : m"
+        /><br /><br />
 
-    <label for="truss-length">S（トラスの一辺の長さを入力） : </label>
-    <input
-      type="number"
-      step="0.01"
-      id="truss-length"
-      class="autowidth"
-      placeholder="単位 : m"
-    /><br /><br />
+        <label for="truss-length">S（トラスの一辺の長さを入力） : </label>
+        <input
+          type="number"
+          step="0.01"
+          id="truss-length"
+          class="autowidth"
+          placeholder="単位 : m"
+        /><br /><br />
 
-    <button id="calculate" onclick="validateInputs()">計算</button><br /><br />
+        <button id="calculate" onclick="validateInputs()">計算</button
+        ><br /><br />
 
-    <div id="result">
-      <div id="Nab"></div>
-      <div id="Ncd"></div>
+        <div id="result">
+          <div id="Nab"></div>
+          <div id="Ncd"></div>
+        </div>
+      </div>
+      <div class="imb">
+        <img src="img/rahmen.jpg" width="500px" />
+      </div>
     </div>
-
     <!--計算-->
     <script>
       function validateInputs() {
